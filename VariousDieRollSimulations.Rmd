@@ -1,0 +1,48 @@
+---
+title: "VariousDieRollSimulations"
+author: "Chris Kalra"
+date: "3/6/2019"
+output: html_document
+---
+
+```{r}
+# Roll 3 dice, 1 million times
+#Just creates 1 column of data
+strt = Sys.time()
+m=10^6 ; s = numeric(m) #s is a numeric vector of length m
+for (i in 1:m) {
+  faces = sample(1:6, 3, rep=T)
+  s[i] = sum(faces) #s[i] should be read as "s subscript i"
+}
+mean(s) ; sd(s) #Approximately E(Sum) and SD(Sum)
+round(216*table(s)/m)
+mean(s==15) ; sum(s==15)/m #Both are approximately P(Sum = 15)
+Sys.time() - strt
+```
+
+```{r}
+# Roll 3 dice, 1 million times
+#In matrix form. Faster, but uses more space
+strt = Sys.time()
+m=10^6 ; n=3
+x = sample(1:6, m*n, rep=T)
+DATA=matrix(x, nrow=m)
+#Choose 1 "s" function
+#s=rowSums(DATA)
+s = apply(DATA, 1, sum)
+mean(s) ; sd(s)
+round(216*table(s)/m)
+Sys.time() - strt
+```
+
+```{r}
+#Probably the simplest way of doing it
+strt = Sys.time()
+m=10^6
+d1 = sample(1:6, m, rep=T)
+d2 = sample(1:6, m, rep=T)
+d3 = sample(1:6, m, rep=T)
+s = d1 + d2 + d3
+mean(s) ; sd(s)
+Sys.time() - strt
+```
